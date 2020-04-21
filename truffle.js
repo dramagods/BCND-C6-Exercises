@@ -1,16 +1,34 @@
-var HDWalletProvider = require("truffle-hdwallet-provider");
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const infuraKey = "4433265e6ac445559cbb94c6c1345fff";
 
-// Be sure to match this mnemonic with that in Ganache!
-var mnemonic = "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
+// const fs = require('fs');
+// const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
   networks: {
     development: {
-      provider: function() {
-        return new HDWalletProvider(mnemonic, "http://127.0.0.1:8545/", 0, 10);
-      },
-      network_id: '*',
-      gas: 9999999
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
+      // port: 7545,
+      network_id: "*",       // Any network (default: none)
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraKey}`),
+        network_id: 4,       // rinkeby's id
+        gas: 4500000,        // rinkeby has a lower block limit than mainnet
+        gasPrice: 10000000000
+    },
+  },
+
+  // Set default mocha options here, use special reporters etc.
+  mocha: {
+    // timeout: 100000
+  },
+
+  // Configure your compilers
+  compilers: {
+    solc: {
+      version: "0.4.25",    // Fetch exact version from solc-bin (default: truffle's version)
     }
   }
-};
+}
